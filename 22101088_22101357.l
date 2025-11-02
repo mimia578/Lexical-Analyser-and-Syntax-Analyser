@@ -33,7 +33,7 @@ letter_	 [A-Za-z_]
 digit	 [0-9]
 id       {letter_}({letter_}|{digit})*
 integers {digit}+
-floats    {digit}+(\.{digit}+)?((E|e)[+-]?{digit}+)?|\.{digit}+((E|e)[+-]?{digit}+)?
+floats    {digit}*(\.{digit}+)?((E|e)[+-]?{digit}+)?
 
 %%
 
@@ -274,11 +274,6 @@ printf      {
                 loglist="Line no "+to_string(lines)+": Token <ID> Lexeme "+yytext+" found"+"\n"+"\n";
 			    outlog<<loglist;
                 return ID;
-            }
-
-.           {
-                loglist="Line no "+to_string(lines)+": Unrecognized character "+yytext+" found"+"\n"+"\n";
-                outlog<<loglist;
             }
 
 %%

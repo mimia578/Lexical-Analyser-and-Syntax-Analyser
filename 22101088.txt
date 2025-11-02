@@ -1,7 +1,0 @@
-we have completed the .l file (Lexical Analyzer/Scanner)
-The .l file scans the C source code character by character and breaks it into meaningful pieces called tokens. It uses pattern matching (regular expressions) to identify keywords (like int, if), operators (+, =), identifiers (variable names), and numbers. Each time it finds a token, it logs it to the output file and sends it to the parser. we may need to recheck the regular expressions to ensure it handles all cases. 
-
-we also completed .y file (Syntax Analyzer/Parser)
-This file receives tokens from the .l file and checks if they follow correct  grammar rules. When tokens match a grammar rule (like "variable declaration"), it logs which rule matched along with the corresponding code segment. If the syntax is wrong, it detects errors.
-
-

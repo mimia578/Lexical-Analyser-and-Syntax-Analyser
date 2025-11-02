@@ -1,22 +1,23 @@
 %{
-
+ 
 #include"symbol_info.h"
-
+#include <stdio.h>
+ 
 #define YYSTYPE symbol_info*
-
+ 
 int yyparse(void);
 int yylex(void);
 void yyerror(char *);
-
+ 
 extern FILE *yyin;
-
-
+ 
+ 
 ofstream outlog;
-
+ 
 int lines=1;
-
+ 
 // declare any other variables or functions needed here
-
+ 
 %}
 
 %token IF ELSE FOR WHILE DO BREAK CONTINUE RETURN INT FLOAT CHAR VOID DOUBLE SWITCH CASE DEFAULT PRINTF ADDOP MULOP INCOP RELOP ASSIGNOP LOGICOP NOT LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COLON GOTO SEMICOLON COMMA ID CONST_INT CONST_FLOAT 
@@ -447,6 +448,13 @@ factor : variable
 			
 		$$ = new symbol_info($1->getname() + $2->getname(),"fctr");
 	}
+//	| variable DECOP
+//	{
+//		outlog<<"At line no: "<<lines<<"  factor : variable DECOP "<<endl<<endl;
+//		outlog<<$1->getname()<<$2->getname()<<endl<<endl;
+//			
+//		$$ = new symbol_info($1->getname() + $2->getname(),"fctr");
+//	}
  	;
 
 argument_list : arguments
@@ -475,7 +483,18 @@ arguments : arguments COMMA logic_expression
 	;
 
 %%
-void yyerror(char *s) {   
+void yyerror(char *s) {
+    if (s) {
+        fprintf(stderr, "Syntax error at line %d: %s\n", lines, s);
+        if (outlog.is_open()) {
+            outlog << "Syntax error at line " << lines << ": " << s << endl;
+        }
+    } else {
+        fprintf(stderr, "Syntax error at line %d: Unexpected token\n", lines);
+        if (outlog.is_open()) {
+            outlog << "Syntax error at line " << lines << ": Unexpected token" << endl;
+        }
+    }
 }
 
 int main(int argc, char *argv[])
@@ -486,7 +505,7 @@ int main(int argc, char *argv[])
         return 1;
 	}
 	yyin = fopen(argv[1], "r");
-	outlog.open("22101088_log.txt", ios::trunc);
+	outlog.open("22101088_22101357_log.txt", ios::trunc);
 	
 	if(yyin == NULL)
 	{
